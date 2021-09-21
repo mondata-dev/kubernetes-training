@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "k8s-training-server.fullname" . }}-storage
+  labels:
+    {{- include "k8s-training-server.labels" . | nindent 4 }}
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10M

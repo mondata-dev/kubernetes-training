@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "k8s-training-server.fullname" . }}
+  labels:
+    {{- include "k8s-training-server.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "k8s-training-server.selectorLabels" . | nindent 4 }}

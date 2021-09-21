@@ -1,0 +1,35 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "k8s-training-server.fullname" . }}
+  labels:
+    {{- include "k8s-training-server.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "k8s-training-server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "k8s-training-server.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ include "k8s-training-server.fullname" . }}
+          image: "mondata/kubernetes-training:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          volumeMounts:
+            - name: storage
+              mountPath: /app/storage
+          envFrom:
+            - configMapRef:
+                name: {{ include "k8s-training-server.fullname" . }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: {{ include "k8s-training-server.fullname" . }}-storage
