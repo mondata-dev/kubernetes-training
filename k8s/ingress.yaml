@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8s-training-server
+  labels:
+    app.kubernetes.io/name: k8s-training-server
+spec:
+  rules:
+    - host: minikube.local # here you'd enter the final domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: k8s-training-server
+                port:
+                  name: http

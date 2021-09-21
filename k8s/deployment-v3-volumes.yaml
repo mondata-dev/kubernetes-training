@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-training-server
+  labels:
+    app.kubernetes.io/name: k8s-training-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: k8s-training-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: k8s-training-server
+    spec:
+      containers:
+        - name: k8s-training-server
+          image: mondata/kubernetes-training:1.0.0
+          volumeMounts:
+            - name: storage
+              mountPath: /app/storage
+          envFrom:
+            - configMapRef:
+                name: k8s-training-server
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: k8s-training-server-storage
