@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: k8s-training-server-storage
   labels:
-    app.kubernetes.io/name: name
+    app.kubernetes.io/name: k8s-training-server
 spec:
   storageClassName: standard
   accessModes:
